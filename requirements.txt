@@ -1,0 +1,11 @@
+agno
+python-dotenv
+aiohttp
+openai
+pgvector
+psycopg2-binary
+sqlalchemy
+uvicorn
+aiofiles
+tiktoken
+chonkie
