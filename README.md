@@ -1,5 +1,7 @@
 # Building a Full RAG System with Agno: Semantic Chunking, Metadata Filters, and Document Processing
 
+This repo is part of a RAG series of [The Pipe & The Line Substack](https://thepipeandtheline.substack.com/).
+
 This project demonstrates how to build a complete Retrieval-Augmented Generation (RAG) system using [Agno](https://github.com/agno-ai/agno), a powerful Python framework for AI agents and knowledge management. We'll walk through implementing semantic chunking, metadata filtering, and document processing for a social media posts knowledge base.
 
 ## 🎯 What We're Building
@@ -41,6 +43,11 @@ pip install -r requirements.txt
 # Set environment variables
 cp .env.example .env
 # Edit .env with your OpenAI API key and database URL
+
+# Or export them if you don't use load_dotenv()
+
+export OPENAI_API_KEY=your_openai_key
+export DATABASE_URL=postgresql://user:pass@localhost:5432/rag_demo
 ```
 
 ### 2. Fetch Sample Data
@@ -167,135 +174,8 @@ agent.print_response(
 # This will only search documents where user_id = 97
 ```
 
-## 📊 Data Flow
-
-### Document Loading Process
-
-1. **File Discovery**: Scan `knowledge/files/` for JSON files
-2. **Document Creation**: Convert each JSON to `Document` object with metadata
-3. **Semantic Chunking**: Split content based on semantic similarity
-4. **Vector Embedding**: Generate embeddings for each chunk
-5. **Database Storage**: Store chunks with metadata and filters
-
-### Query Process
-
-1. **Query Processing**: User asks a question
-2. **Filter Application**: Apply metadata filters (e.g., `user_id: 97`)
-3. **Vector Search**: Find semantically similar chunks
-4. **Context Assembly**: Combine relevant chunks
-5. **AI Response**: Generate answer using context
-
-## 🎨 Advanced Features
-
-### Custom Chunking Strategies
-
-```python
-# Fixed-size chunking (alternative)
-from agno.document.chunking.fixed import FixedSizeChunking
-chunking_strategy = FixedSizeChunking(chunk_size=1000, overlap=200)
-
-# Or create custom chunking logic
-class CustomChunking(ChunkingStrategy):
-    def chunk(self, document: Document) -> List[Document]:
-        # Your custom logic here
-        pass
-```
-
-### Multiple Filter Types
-
-```python
-# Filter by multiple criteria
-filters = {
-    "user_id": 97,
-    "tags": ["technology", "ai"],
-    "views": {"$gte": 100}  # Views >= 100
-}
-```
-
-### Batch Processing
-
-```python
-# Load multiple documents efficiently
-documents = generate_documents()
-for doc, filters in documents:
-    knowledge_base.load_documents(
-        documents=[doc],
-        filters=filters,
-    )
-```
-
-## 🚨 Common Pitfalls & Solutions
-
-### 1. Invalid Filter Warnings
-
-**Problem**: `WARNING Invalid filter keys provided: ['user_id']`
-
-**Solution**: Initialize valid filters before querying:
-```python
-initialize_knowledge_filters(knowledge_base)
-```
-
-### 2. Chunking Issues
-
-**Problem**: Chunks are too small/large or break context
-
-**Solution**: Adjust semantic similarity threshold:
-```python
-# More granular chunks
-SemanticChunking(similarity_threshold=0.5)
-
-# Larger chunks
-SemanticChunking(similarity_threshold=0.2)
-```
-
-## 🔧 Configuration Options
-
-### Environment Variables
-
-```bash
-OPENAI_API_KEY=your_openai_key
-DATABASE_URL=postgresql://user:pass@localhost:5432/rag_demo
-```
-
-### Vector Database Options
-
-```python
-# Different search types
-SearchType.vector      # Pure vector similarity
-SearchType.hybrid      # Vector + keyword (recommended)
-SearchType.keyword     # Pure keyword search
-```
-
-### Embedding Models
-
-```python
-# Different embedding models
-OpenAIEmbedder(id="text-embedding-ada-002")  # Fast, good quality
-OpenAIEmbedder(id="text-embedding-3-small")  # Newer, better quality
-OpenAIEmbedder(id="text-embedding-3-large")  # Best quality, slower
-```
-
-## 📈 Performance Tips
-
-1. **Batch Operations**: Load documents in batches for better performance
-2. **Filter Optimization**: Use specific filters to reduce search space
-3. **Chunking Strategy**: Balance chunk size with semantic coherence
-4. **Index Management**: Ensure proper database indexing on filter columns
-
-## 🎯 Use Cases
-
-This RAG system is perfect for:
-- **Customer Support**: Query knowledge base with user context
-- **Content Management**: Search through documents with metadata filters
-- **Research**: Semantic search across large document collections
-- **Personal Assistants**: Context-aware responses based on user data
-
 ## 🔗 Resources
 
 - [Agno Documentation](https://github.com/agno-ai/agno)
 - [pgvector Documentation](https://github.com/pgvector/pgvector)
 - [OpenAI Embeddings Guide](https://platform.openai.com/docs/guides/embeddings)
-
----
-
-**Ready to build your own RAG system?** Start with this template and customize it for your specific use case. The modular design makes it easy to swap components and add new features as your needs evolve.
