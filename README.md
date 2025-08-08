@@ -2,8 +2,6 @@
 
 This repo is part of a RAG series of [The Pipe & The Line Substack](https://thepipeandtheline.substack.com/).
 
-This project demonstrates how to build a complete Retrieval-Augmented Generation (RAG) system using [Agno](https://github.com/agno-ai/agno), a powerful Python framework for AI agents and knowledge management. We'll walk through implementing semantic chunking, metadata filtering, and document processing for a social media posts knowledge base.
-
 ## 🎯 What We're Building
 
 A RAG system that can:
