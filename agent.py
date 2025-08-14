@@ -51,5 +51,5 @@ initialize_knowledge_filters(social_media_knowledge_base)
 
 agent.print_response(
     "What was her terrible habit?",
-    knowledge_filters={"user_id": 97},
+    knowledge_filters={"user_id": 97},  # knowledge_filters={"user_id": 19},
 )
