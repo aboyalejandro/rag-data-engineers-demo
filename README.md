@@ -33,7 +33,7 @@ A RAG system that can:
 ```bash
 # Clone and setup
 git clone <your-repo>
-cd rag-demo
+cd rag-data-engineers-demo
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
